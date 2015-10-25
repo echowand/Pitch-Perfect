@@ -21,9 +21,9 @@ class PlaySoundViewController: UIViewController {
         // Do any additional setup after loading the view.
         do{
             audioPlayer = try AVAudioPlayer(contentsOfURL: recordedAudio.filePathUrl)
-            self.audioPlayer.enableRate = true
-        }catch{
-            print("Error")
+            audioPlayer.enableRate = true
+        }catch let error as NSError{
+            print("Failed to play audio: " + error.localizedDescription)
         }
         audioEngine = AVAudioEngine()
         audioFile = try! AVAudioFile(forReading: recordedAudio.filePathUrl)
@@ -36,21 +36,17 @@ class PlaySoundViewController: UIViewController {
     
     // slow sound
     @IBAction func onPlaySound(sender: UIButton) {
-        self.audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
-        self.audioPlayer.rate = 0.5
-        self.audioPlayer.currentTime = 0
-        self.audioPlayer.play()
+        stopAudio()
+        audioPlayer.rate = 0.5
+        audioPlayer.currentTime = 0
+        audioPlayer.play()
     }
 
     @IBAction func onFastSound(sender: UIButton) {
-        self.audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
-        self.audioPlayer.rate = 1.5
-        self.audioPlayer.currentTime = 0
-        self.audioPlayer.play()
+        stopAudio()
+        audioPlayer.rate = 1.5
+        audioPlayer.currentTime = 0
+        audioPlayer.play()
     }
     
     @IBAction func onChipmunkSound(sender: UIButton) {
@@ -61,10 +57,14 @@ class PlaySoundViewController: UIViewController {
         playAudioWithVariablePitch(-1000)
     }
     
-    func playAudioWithVariablePitch(pitch: Float){
+    func stopAudio(){
         audioPlayer.stop()
         audioEngine.stop()
         audioEngine.reset()
+    }
+    
+    func playAudioWithVariablePitch(pitch: Float){
+        stopAudio()
         
         let audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
@@ -83,17 +83,7 @@ class PlaySoundViewController: UIViewController {
     }
     
     @IBAction func onStopSound(sender: UIButton) {
-        self.audioPlayer.stop()
+        stopAudio()
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

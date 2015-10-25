@@ -10,7 +10,10 @@ import UIKit
 import AVFoundation
 
 class ViewController: UIViewController, AVAudioRecorderDelegate {
-
+    
+    @IBOutlet weak var recordingLabel: UILabel!
+    @IBOutlet weak var stopButton: UIButton!
+    
     var audioRecorder:AVAudioRecorder!
     var recordedAudio:RecordedAudio!
     
@@ -76,7 +79,5 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         try! audioSession.setActive(false)
     }
     
-    @IBOutlet weak var recordingLabel: UILabel!
-    @IBOutlet weak var stopButton: UIButton!
 }
 
